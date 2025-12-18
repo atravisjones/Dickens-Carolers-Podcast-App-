@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dickens Carolers Podcast</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Lora:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'brand-bg': '#FDFBF6', // A creamy, off-white background
+              'brand-card': '#FFFFFF',
+              'brand-text': '#403126', // A dark, warm brown for text
+              'brand-muted': '#7A6B5F', // A muted brown for secondary text
+              'brand-accent': '#3D6D8F', // A stately blue from the button
+              'brand-accent-red': '#A43A3A', // A rich, deep red
+              'brand-border': '#D1C7B7', // A soft, parchment-like border color
+              'brand-header-start': '#6b4f3a', // Brown gradient for header
+              'brand-header-end': '#4a3728',
+            },
+            fontFamily: {
+              sans: ['Lora', 'Georgia', 'serif'],
+              display: ['"Playfair Display"', 'serif'],
+            },
+          },
+        },
+      }
+    </script>
+    <!-- Add OpenSheetMusicDisplay library -->
+    <script src="https://cdn.jsdelivr.net/npm/opensheetmusicdisplay@1.8.3/build/opensheetmusicdisplay.min.js"></script>
+    <style>
+      body {
+        background-color: #EAE6E1;
+      }
+      /* OSMD override to ensure it renders correctly with other layout styles */
+      .osmd-container > div {
+        display: block !important;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/"
+  }
+}
+</script>
+</head>
+  <body class="text-brand-text font-sans antialiased">
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+  </body>
+</html>
