@@ -44,6 +44,22 @@
       .osmd-container > div {
         display: block !important;
       }
+      
+      /* Custom scrollbar for better aesthetics */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #D1C7B7;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #7A6B5F;
+      }
     </style>
   <script type="importmap">
 {
@@ -58,5 +74,6 @@
   <body class="text-brand-text font-sans antialiased">
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+    <script type="module" src="./index.tsx"></script>
   </body>
 </html>
