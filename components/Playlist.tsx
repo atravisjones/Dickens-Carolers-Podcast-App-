@@ -69,7 +69,7 @@ const EpisodeRow: React.FC<{
 
     return (
         <li className={`group border-b border-brand-border/40 transition-colors ${isCurrent ? 'bg-brand-accent/10' : 'hover:bg-black/[0.02]'}`}>
-            <div className={`w-full p-2 sm:px-4 grid grid-cols-1 sm:grid ${gridClass} sm:gap-2 items-center text-sm`}>
+            <div className={`w-full p-3 sm:px-4 flex flex-col sm:grid ${gridClass} sm:gap-2 sm:items-center text-sm`}>
                 
                 {/* 1. Index (#) */}
                 <div className="hidden sm:flex justify-center items-center text-xs text-brand-muted font-mono">
@@ -113,15 +113,19 @@ const EpisodeRow: React.FC<{
                 </div>
 
                 {/* 5. Title Area (Main Clickable Area) */}
+                {/* On mobile: full width, flex row for title + heart */}
                 <div 
-                    className="min-w-0 flex items-center justify-between sm:justify-start gap-2 cursor-pointer sm:py-3 sm:px-1"
+                    className="w-full sm:w-auto min-w-0 flex items-center justify-between sm:justify-start gap-2 cursor-pointer sm:py-3 sm:px-1"
                     onClick={() => {
                         log('DEBUG', 'User clicked title to play', { title: episode.title, id: episode.id });
                         onPlayEpisode(episode.id);
                     }}
                 >
-                    <div className="min-w-0">
-                      <div className={`font-bold truncate ${isCurrent ? 'text-brand-accent' : 'text-brand-text'}`}>{episode.title}</div>
+                    <div className="min-w-0 flex-grow">
+                      <div className={`font-bold text-base sm:text-sm truncate ${isCurrent ? 'text-brand-accent' : 'text-brand-text'}`}>{episode.title}</div>
+                      <div className="text-[11px] text-brand-muted truncate opacity-80 sm:hidden">
+                          {episode.description.replace(/<[^>]+>/g, '').slice(0, 80)}...
+                      </div>
                       <div className="text-[11px] text-brand-muted truncate hidden md:block opacity-70">
                           {episode.description.replace(/<[^>]+>/g, '').slice(0, 100)}
                       </div>
@@ -129,7 +133,7 @@ const EpisodeRow: React.FC<{
                     {/* Mobile Favorite button inside title area */}
                      <button 
                         onClick={(e) => { e.stopPropagation(); onToggleFavorite(episode.audioUrl); }}
-                        className="sm:hidden text-2xl text-brand-accent-red p-1"
+                        className="sm:hidden text-2xl text-brand-accent-red p-2 -mr-2"
                      >
                         {isFavorite ? '♥' : '♡'}
                     </button>
@@ -160,25 +164,29 @@ const EpisodeRow: React.FC<{
                 <div className="hidden sm:block text-[11px] text-brand-muted text-right pr-2 font-mono">{durationText}</div>
 
                 {/* --- MOBILE COMPACT METADATA (only shows on small screens) --- */}
-                <div className="sm:hidden flex flex-col gap-2 mt-1 px-1 pb-2 border-t border-brand-border/20 pt-2">
-                     <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-brand-muted font-medium">
-                        <button onClick={(e) => { e.stopPropagation(); onOpenPlaysModal(episode); }} className="flex items-center gap-1">
-                            <span className="text-brand-accent font-bold">{playCount}</span> plays
-                        </button>
-                        <span className="w-1 h-1 bg-brand-border rounded-full"></span>
-                        <button onClick={(e) => { e.stopPropagation(); onOpenConfidenceModal(episode); }}>
-                            Conf: <span className="text-brand-text font-bold">{confidence}%</span>
-                        </button>
-                        <span className="w-1 h-1 bg-brand-border rounded-full"></span>
-                        {isBookLayout && <span>Key: <span className="text-brand-text font-bold">{episode.songKey || '-'}</span></span>}
-                        {isBookLayout && <span>Page: <span className="text-brand-text font-bold">{episode.songPage || '-'}</span></span>}
-                        <span className="w-1 h-1 bg-brand-border rounded-full"></span>
-                        <span className="font-mono">{durationText}</span>
+                <div className="w-full sm:hidden flex flex-col gap-3 mt-1 pt-2 border-t border-brand-border/20">
+                     <div className="flex flex-wrap items-center justify-between text-xs text-brand-muted font-medium">
+                        <div className="flex items-center gap-3">
+                            <button onClick={(e) => { e.stopPropagation(); onOpenPlaysModal(episode); }} className="flex items-center gap-1 bg-brand-bg border border-brand-border px-2 py-0.5 rounded-full">
+                                <span className="text-brand-accent font-bold">{playCount}</span> plays
+                            </button>
+                            <button onClick={(e) => { e.stopPropagation(); onOpenConfidenceModal(episode); }} className="flex items-center gap-1 bg-brand-bg border border-brand-border px-2 py-0.5 rounded-full">
+                                Conf: <span className="text-brand-text font-bold">{confidence}%</span>
+                            </button>
+                        </div>
+                        <span className="font-mono text-[10px] bg-brand-bg px-1 rounded">{durationText}</span>
                     </div>
-                     <div className="flex items-center gap-2">
-                        {episode.choreo.front && <button onClick={(e) => { e.stopPropagation(); onOpenNotes(episode.choreo.front!, episode.title, 'Front'); }} className="px-3 py-1 text-[10px] font-bold bg-white border border-brand-border rounded-full">Front</button>}
-                        {episode.choreo.back && <button onClick={(e) => { e.stopPropagation(); onOpenNotes(episode.choreo.back!, episode.title, 'Back'); }} className="px-3 py-1 text-[10px] font-bold bg-white border border-brand-border rounded-full">Back</button>}
-                        {episode.choreo.notes && <button onClick={(e) => { e.stopPropagation(); onOpenNotes(episode.choreo.notes!, episode.title, 'Notes'); }} className="px-3 py-1 text-[10px] font-bold bg-white border border-brand-border rounded-full">Notes</button>}
+                    
+                    <div className="flex items-center justify-between">
+                         <div className="flex items-center gap-2 text-xs text-brand-muted">
+                            {isBookLayout && <span className="bg-brand-bg px-1.5 py-0.5 rounded border border-brand-border/50">Key: <span className="font-bold text-brand-text">{episode.songKey || '-'}</span></span>}
+                            {isBookLayout && <span className="bg-brand-bg px-1.5 py-0.5 rounded border border-brand-border/50">Pg: <span className="font-bold text-brand-text">{episode.songPage || '-'}</span></span>}
+                        </div>
+                         <div className="flex items-center gap-2">
+                            {episode.choreo.front && <button onClick={(e) => { e.stopPropagation(); onOpenNotes(episode.choreo.front!, episode.title, 'Front'); }} className="px-3 py-1 text-[10px] font-bold bg-white border border-brand-border rounded-full shadow-sm">Front</button>}
+                            {episode.choreo.back && <button onClick={(e) => { e.stopPropagation(); onOpenNotes(episode.choreo.back!, episode.title, 'Back'); }} className="px-3 py-1 text-[10px] font-bold bg-white border border-brand-border rounded-full shadow-sm">Back</button>}
+                            {episode.choreo.notes && <button onClick={(e) => { e.stopPropagation(); onOpenNotes(episode.choreo.notes!, episode.title, 'Notes'); }} className="px-3 py-1 text-[10px] font-bold bg-white border border-brand-border rounded-full shadow-sm">Notes</button>}
+                        </div>
                     </div>
                 </div>
             </div>
